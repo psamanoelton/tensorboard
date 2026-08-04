@@ -17,7 +17,7 @@ py_library(
         "//tensorboard/plugins:base_plugin",
         "//tensorboard/util:grpc_util",
         "//tensorboard/util:tb_logging",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -34,6 +34,6 @@ py_test(
         "//tensorboard/data:provider",
         "//tensorboard/plugins:base_plugin",
         "//tensorboard/util:test_util",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )

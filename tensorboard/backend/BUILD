@@ -14,7 +14,7 @@ py_library(
     visibility = ["//visibility:public"],
     deps = [
         ":json_util",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -26,7 +26,7 @@ py_test(
     deps = [
         ":http_util",
         "//tensorboard:test",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -63,7 +63,7 @@ py_library(
         "//tensorboard:plugin_util",
         "//tensorboard/plugins/core:core_plugin",
         "//tensorboard/util:tb_logging",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -80,7 +80,7 @@ py_test(
         "//tensorboard:test",
         "//tensorboard/data:provider",
         "//tensorboard/plugins:base_plugin",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -103,7 +103,7 @@ py_test(
         "//tensorboard:auth",
         "//tensorboard:context",
         "//tensorboard:test",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -120,7 +120,7 @@ py_test(
     deps = [
         ":empty_path_redirect",
         "//tensorboard:test",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -135,7 +135,7 @@ py_test(
     deps = [
         ":experiment_id",
         "//tensorboard:test",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -161,7 +161,7 @@ py_test(
         ":path_prefix",
         "//tensorboard:errors",
         "//tensorboard:test",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -176,7 +176,7 @@ py_library(
     srcs = ["security_validator.py"],
     deps = [
         "//tensorboard/util:tb_logging",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -189,7 +189,7 @@ py_test(
         ":security_validator",
         "//tensorboard:test",
         "//tensorboard/util:tb_logging",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -211,6 +211,6 @@ py_test(
         ":client_feature_flags",
         "//tensorboard:errors",
         "//tensorboard:test",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )

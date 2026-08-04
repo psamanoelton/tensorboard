@@ -23,8 +23,8 @@ permissions:
   contents: read
 
 env:
-  # Keep this Bazel version in sync with the `versions.check` directive
-  # in our WORKSPACE file.
+  # Keep this Bazel version in sync with .bazelversion and MODULE.bazel's
+  # bazel_compatibility declaration. Bazel 8 is intentionally unsupported.
   BAZEL_VERSION: '7.7.0'
   BAZEL_SHA256SUM: 'fe7e799cbc9140f986b063e06800a3d4c790525075c877d00a7112669824acbf'
   BUILDTOOLS_VERSION: '3.0.0'
@@ -41,6 +41,7 @@ jobs:
     # Self-hosted runner since the ones provided by GH were running out of space.
     # Other workflows are likely ok to use standard GH runners for now.
     # Googlers, see b/460874304.
+    # Bazel build and test support is currently validated on Linux only.
     runs-on: linux-x86-n2-32
     # Pinned to a digest because zizmor's unpinned-images check rejects tags.
     # To refresh: crane digest <image>:latest
@@ -53,9 +54,9 @@ jobs:
         python_version: ['3.10']
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-      # Use the container's system Python installation path instead of
-      # actions/setup-python so Bazel's @system_python repo sees a standard
-      # interpreter/header layout.
+      # The host virtualenv is used by pip-package tests. Protobuf also reads
+      # its matching system headers while Bazel Python actions use the
+      # checksummed rules_python 3.10 runtime from MODULE.bazel.
       - name: 'Set up Python and system dependencies'
         run: |
           py_abi="python${{ matrix.python_version }}"
@@ -71,7 +72,7 @@ jobs:
           echo "/tmp/tb-build-venv/bin" >> "${GITHUB_PATH}"
           echo "VIRTUAL_ENV=/tmp/tb-build-venv" >> "${GITHUB_ENV}"
           /tmp/tb-build-venv/bin/python -m pip install -U pip setuptools wheel virtualenv
-      - name: 'Check Python toolchain'
+      - name: 'Check host Python environment'
         run: |
           python --version
           python - <<'PY'

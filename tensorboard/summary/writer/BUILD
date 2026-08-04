@@ -52,6 +52,8 @@ py_test(
     ],
     deps = [
         ":writer",
+        "//tensorboard:expect_boto3_installed",
+        "//tensorboard:expect_moto_installed",
         "//tensorboard:test",
     ],
 )

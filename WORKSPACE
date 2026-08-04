@@ -1,3 +1,7 @@
+# Legacy `--noenable_bzlmod` builds are no longer supported. Bazel 7.7.0 reads
+# MODULE.bazel and WORKSPACE.bzlmod for supported TensorBoard builds. This file
+# remains temporarily because repository checks and downstream tooling still
+# inspect the legacy declarations.
 workspace(name = "org_tensorflow_tensorboard")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")

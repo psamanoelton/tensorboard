@@ -18,7 +18,7 @@ py_library(
         "//tensorboard/backend:http_util",
         "//tensorboard/plugins:base_plugin",
         "//tensorboard/plugins/histogram:histograms_plugin",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -39,7 +39,7 @@ py_test(
         "//tensorboard/plugins:base_plugin",
         "//tensorboard/plugins/histogram:summary",
         "//tensorboard/util:test_util",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -62,7 +62,7 @@ py_test(
         "//tensorboard/plugins:base_plugin",
         "//tensorboard/plugins/histogram:summary",
         "//tensorboard/util:test_util",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 

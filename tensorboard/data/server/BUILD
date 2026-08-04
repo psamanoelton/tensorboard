@@ -136,7 +136,7 @@ py_binary(
     data = [":rustboard_core_doc.zip"],
     tags = ["manual"],  # https://github.com/bazelbuild/rules_rust/issues/689
     deps = [
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 

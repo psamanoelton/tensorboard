@@ -4,6 +4,7 @@
 load("@rules_python//python:py_binary.bzl", "py_binary")
 load("@rules_python//python:py_library.bzl", "py_library")
 load("@rules_python//python:py_test.bzl", "py_test")
+load("@tensorboard_pip_deps//:requirements.bzl", "requirement")
 load("//tensorboard/defs:py_repl.bzl", "py_repl")
 load("//tensorboard/defs:web.bzl", "tf_web_library")
 load("//tensorboard/defs:zipper.bzl", "tensorboard_zip_file")
@@ -252,7 +253,7 @@ py_library(
         "//tensorboard/backend/event_processing:event_file_inspector",
         "//tensorboard/data:server_ingester",
         "//tensorboard/plugins/core:core_plugin",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -270,7 +271,7 @@ py_test(
         ":test",
         "//tensorboard/plugins:base_plugin",
         "//tensorboard/plugins/core:core_plugin",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -371,29 +372,33 @@ tensorboard_zip_file(
     deps = ["//tensorboard/webapp/dev_assets"],
 )
 
-# This is a dummy rule used as a numpy dependency in open-source.
-# We expect numpy to already be installed on the system, e.g. via
-# `pip install numpy`
-py_library(name = "expect_numpy_installed")
+# These compatibility targets retain their historical names so existing BUILD
+# files do not need to know how Python packages are resolved. Their packages
+# now come from the locked Bzlmod pip hub rather than host site-packages.
+py_library(
+    name = "expect_numpy_installed",
+    deps = [requirement("numpy")],
+)
 
-# This is a dummy rule used as a pillow dependency in open-source.
-# We expect pillow to already be installed on the system, e.g. via
-# `pip install pillow`
-py_library(name = "expect_pillow_installed")
+# Pillow compatibility target.
+py_library(
+    name = "expect_pillow_installed",
+    deps = [requirement("pillow")],
+)
 
-# This is a dummy rule used as a grpc dependency in open-source.
-# We expect grpc to already be installed on the system, e.g. via
-# `pip install grpcio`
-py_library(name = "expect_grpc_installed")
+# grpcio compatibility target.
+py_library(
+    name = "expect_grpc_installed",
+    deps = [requirement("grpcio")],
+)
 
-# This is a dummy rule used as a grpc_testing dependency in open-source.
-# We expect grpc_testing to already be installed on the system, e.g. via
-# `pip install grpcio_testing`
-py_library(name = "expect_grpc_testing_installed")
+# grpcio-testing compatibility target.
+py_library(
+    name = "expect_grpc_testing_installed",
+    deps = [requirement("grpcio-testing")],
+)
 
-# This is a dummy rule used as a TensorFlow dependency in open-source.
-# We expect TensorFlow to already be installed on the system, e.g. via
-# `pip install tensorflow`
+# TensorFlow compatibility target.
 #
 # NOTE: we include the dep on //tensorboard/summary:tf_summary so that
 # any TensorBoard code that depends on TF also depends on the tf.summary
@@ -406,6 +411,7 @@ py_library(
     name = "expect_tensorflow_installed",
     deps = [
         "//tensorboard/summary:tf_summary",
+        requirement("tensorflow"),
     ],
 )
 
@@ -417,41 +423,72 @@ py_library(name = "expect_tensorflow_datasets_installed")
 # This is a dummy rule used as a absl-py dependency in open-source.
 # We expect absl-py to already be installed on the system, e.g. via
 # `pip install absl-py`
-py_library(name = "expect_absl_app_installed")
+py_library(
+    name = "expect_absl_app_installed",
+    deps = [requirement("absl-py")],
+)
 
 # This is a dummy rule used as a absl-py dependency in open-source.
 # We expect absl-py to already be installed on the system, e.g. via
 # `pip install absl-py`
-py_library(name = "expect_absl_flags_installed")
+py_library(
+    name = "expect_absl_flags_installed",
+    deps = [requirement("absl-py")],
+)
 
 # This is a dummy rule used as a absl-py dependency in open-source.
 # We expect absl-py to already be installed on the system, e.g. via
 # `pip install absl-py`
-py_library(name = "expect_absl_logging_installed")
+py_library(
+    name = "expect_absl_logging_installed",
+    deps = [requirement("absl-py")],
+)
 
 # This is a dummy rule used as a absl-py dependency in open-source.
 # We expect absl-py to already be installed on the system, e.g. via
 # `pip install absl-py`
-py_library(name = "expect_absl_testing_absltest_installed")
+py_library(
+    name = "expect_absl_testing_absltest_installed",
+    deps = [requirement("absl-py")],
+)
 
 # This is a dummy rule used as a packaging dependency in open-source.
 # We expect packaging to already be installed on the system, e.g. via
 # `pip install packaging`.
-py_library(name = "expect_packaging_installed")
+py_library(
+    name = "expect_packaging_installed",
+    deps = [requirement("packaging")],
+)
 
 # This is a dummy rule used as a pandas dependency in open-source.
 # We expect pandas to already be installed on the system, e.g. via
 # `pip install pandas`.
 # NOTE: Unlike other parallel dependencies in this file, pandas is an
 # optional dependency.
-py_library(name = "expect_pandas_installed")
+py_library(
+    name = "expect_pandas_installed",
+    deps = [requirement("pandas")],
+)
 
 # This is a dummy rule used as a fsspec dependency in open-source.
 # We expect fsspec to already be installed on the system, e.g. via
 # `pip install fsspec`.
 # NOTE: Unlike other parallel dependencies in this file, fsspec is an
 # optional dependency.
-py_library(name = "expect_fsspec_installed")
+py_library(
+    name = "expect_fsspec_installed",
+    deps = [requirement("fsspec")],
+)
+
+py_library(
+    name = "expect_boto3_installed",
+    deps = [requirement("boto3")],
+)
+
+py_library(
+    name = "expect_moto_installed",
+    deps = [requirement("moto")],
+)
 
 # This is a dummy rule used as a protobuf dependency in open-source.
 # We expect protobuf to already be installed on the system, e.g. via
@@ -462,7 +499,10 @@ py_library(name = "expect_fsspec_installed")
 # done by protoc as part of the build process. The protoc version may
 # differ from the runtime version, but to be compatible, the runtime
 # version should always be >= the protoc version.
-py_library(name = "expect_protobuf_installed")
+py_library(
+    name = "expect_protobuf_installed",
+    deps = [requirement("protobuf")],
+)
 
 py_library(
     name = "data_compat",
@@ -562,6 +602,7 @@ py_library(
     visibility = ["//visibility:public"],
     deps = [
         ":context",
+        "//tensorboard:expect_packaging_installed",
         "//tensorboard:expect_protobuf_installed",
         "//tensorboard/backend:experiment_id",
         "//tensorboard/util:tb_logging",

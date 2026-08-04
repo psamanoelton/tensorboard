@@ -24,7 +24,7 @@ py_library(
         "//tensorboard/plugins:base_plugin",
         "//tensorboard/plugins/scalar:metadata",
         "//tensorboard/plugins/scalar:scalars_plugin",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -81,7 +81,7 @@ py_test(
         "//tensorboard/plugins/scalar:scalars_plugin",
         "//tensorboard/plugins/scalar:summary",
         "//tensorboard/util:test_util",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -107,7 +107,7 @@ py_test(
         "//tensorboard/plugins/scalar:scalars_plugin",
         "//tensorboard/plugins/scalar:summary",
         "//tensorboard/util:test_util",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 

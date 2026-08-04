@@ -40,9 +40,9 @@ py_test(
 #
 # Depend on this rule if your code is usable with either real or stub TF.
 #
-# External only: targets that need real TF should instead depend on the
-# placeholder rule //tensorboard:expect_tensorflow_installed, which is a no-op
-# as written but can be swapped out for a real dependency.
+# External only: targets that need real TF should instead depend on
+# //tensorboard:expect_tensorflow_installed, which supplies the locked
+# TensorFlow wheel in open-source builds.
 py_library(
     name = "tensorflow",
     srcs = ["__init__.py"],

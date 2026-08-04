@@ -8,6 +8,11 @@ package(default_visibility = ["//visibility:private"])
 
 licenses(["notice"])
 
+exports_files([
+    "requirements_bazel.in",
+    "requirements_bazel_lock.txt",
+])
+
 genrule(
     name = "pip_package",
     # Pip packages are provided in a tarball because we can't statically

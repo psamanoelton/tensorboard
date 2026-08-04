@@ -1,7 +1,7 @@
-load("//tensorboard/defs:protos.bzl", "tb_proto_library")
 load("@rules_python//python:py_binary.bzl", "py_binary")
 load("@rules_python//python:py_library.bzl", "py_library")
 load("@rules_python//python:py_test.bzl", "py_test")
+load("//tensorboard/defs:protos.bzl", "tb_proto_library")
 
 package(default_visibility = ["//tensorboard:internal"])
 
@@ -47,7 +47,7 @@ py_library(
         "//tensorboard/backend:http_util",
         "//tensorboard/data:provider",
         "//tensorboard/plugins:base_plugin",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -58,7 +58,7 @@ py_library(
     deps = [
         ":summary",
         "//tensorboard/backend/event_processing:event_multiplexer",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -77,7 +77,7 @@ py_test(
         "//tensorboard/backend/event_processing:event_multiplexer",
         "//tensorboard/plugins:base_plugin",
         "//tensorboard/util:test_util",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
@@ -141,6 +141,7 @@ py_library(
     srcs = ["demo_utils.py"],
     deps = [
         "//tensorboard:expect_numpy_installed",
+        "//tensorboard:expect_tensorflow_installed",
         "//tensorboard/compat",
         "//tensorboard/compat:tensorflow",
     ],

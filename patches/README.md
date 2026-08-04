@@ -3,11 +3,11 @@
 We use [patch-package](https://www.npmjs.com/package/patch-package) to author
 TensorBoard-specific patches to some of our npm/yarn dependencies.
 
-At build time, `WORKSPACE` applies the generated patch artifacts via
-`yarn_install(post_install_patches = ...)` instead of invoking
-`patch-package` inside the repository rule. In the current Bazel/CI setup, that
-install-time invocation was less reliable than applying the generated patch
-files directly.
+At build time, `WORKSPACE` and the transitional `WORKSPACE.bzlmod` apply the
+generated patch artifacts via `yarn_install(post_install_patches = ...)`
+instead of invoking `patch-package` inside the repository rule. In the current
+Bazel/CI setup, that install-time invocation was less reliable than applying
+the generated patch files directly.
 
 After creating or updating a patch, ensure there is no trailing whitespace on
 any line (CI runs `./tensorboard/tools/whitespace_hygiene_test.py`). You can
@@ -101,6 +101,25 @@ To regenerate:
 - Relaxes the import-prefix normalization check so empty-but-normalized values
   continue to work under the newer path handling used here.
 
+## `protobuf_6_31_1_bzlmod.patch`
+
+**Modified files:**
+- `MODULE.bazel`
+
+**What it does:**
+- Restores protobuf's system-Python repository when protobuf 6.31.1 is consumed
+  through its source `MODULE.bazel`. The upstream module currently aliases that
+  name to a rules_python toolchain repository, which does not provide the
+  `version.bzl` and Python-header targets that protobuf's public Python build
+  expects.
+- Makes protobuf's pip module extension available to consumers. Its
+  `//python/dist` package loads `@protobuf_pip_deps`, so marking that extension
+  as development-only leaves the repository unmapped in TensorBoard's module
+  graph.
+
+Removal is planned once the protobuf module provides these repositories to
+downstream consumers without a source override.
+
 
 ## `rules_cc_protobuf.patch`
 
@@ -123,3 +142,35 @@ To regenerate:
   here.
 - Switches to the `--depHeaders` flag expected by this compiler and drops the
   older `--allowExternalCalls` flag that is not accepted here.
+
+
+## `rules_closure_bzlmod.patch`
+
+**Modified files:**
+- `closure/defs.bzl`
+
+**What it does:**
+- Removes the unused `setup_web_test_repositories` export from the pinned
+  Closure snapshot. That helper eagerly loads repository macros removed from
+  rules_webtesting 0.4.1, even though TensorBoard never calls the helper.
+- Lets TensorBoard consume `rules_webtesting` and
+  `rules_web_testing_python` as Bazel modules while retaining the existing
+  Bazel-7-compatible Closure/Soy setup.
+
+Removal is planned when TensorBoard moves to a module-native Closure release
+whose public definitions no longer load the legacy web-testing setup.
+
+
+## `rules_web_testing_python_py310.patch`
+
+**Modified files:**
+- `MODULE.bazel`
+
+**What it does:**
+- Changes the rules_web_testing_python 0.4.1 toolchain and pip-wheel tags from
+  Python 3.11 to TensorBoard's hermetic Python 3.10 baseline.
+- Prevents its Selenium target from selecting a Python-3.11-only wheel while
+  TensorBoard analyzes functional tests with Python 3.10.
+
+Removal is planned when rules_web_testing_python lets the root module select
+the Python version instead of hardcoding it in the dependency module.

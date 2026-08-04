@@ -1,4 +1,7 @@
-common --noenable_bzlmod
+# Bazel 7.7.0 remains pinned in .bazelversion. Bzlmod is TensorBoard's only
+# supported dependency-resolution entry point. WORKSPACE.bzlmod is an internal
+# compatibility bridge for dependencies that do not yet expose module APIs.
+common --enable_bzlmod
 # Let the OS-specific sections below (`common:linux`, `common:macos`, etc.)
 # take effect so one `.bazelrc` can carry the required per-platform C++ flags.
 common --enable_platform_specific_config

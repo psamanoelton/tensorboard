@@ -1,4 +1,4 @@
-load("@io_bazel_rules_webtesting//web:py.bzl", "py_web_test_suite")
+load("@rules_web_testing_python//web:py.bzl", "py_web_test_suite")
 
 package(default_visibility = ["//tensorboard:internal"])
 
@@ -20,6 +20,6 @@ py_web_test_suite(
     deps = [
         "//tensorboard/plugins/audio:audio_demo",
         "//tensorboard/plugins/scalar:scalars_demo",
-        "@io_bazel_rules_webtesting//testing/web",
+        "@rules_web_testing_python//testing/web",
     ],
 )

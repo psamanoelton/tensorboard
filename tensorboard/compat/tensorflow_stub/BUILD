@@ -55,6 +55,8 @@ py_test(
     ],
     deps = [
         ":tensorflow_stub",
+        "//tensorboard:expect_boto3_installed",
+        "//tensorboard:expect_moto_installed",
         "//tensorboard:test",
     ],
 )

@@ -49,7 +49,7 @@ py_library(
         "//tensorboard/plugins/scalar:scalars_plugin",
         "//tensorboard/util:tb_logging",
         "//tensorboard/util:tensor_util",
-        "@org_pocoo_werkzeug",
+        "@tensorboard_pip_deps//werkzeug",
     ],
 )
 
