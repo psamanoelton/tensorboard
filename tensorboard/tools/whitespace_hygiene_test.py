@@ -29,7 +29,9 @@ import sys
 # This is required by patch format and cannot be removed.
 exceptions = frozenset(
     [
+        "patches/@bazel+concatjs+5.8.1.patch",
         "patches/protobuf_6_31_1_bzlmod.patch",
+        "patches/protobuf_6_31_1_java_export.patch",
         "patches/rules_web_testing_python_py310.patch",
     ]
 )
@@ -52,7 +54,9 @@ class Match:
 
 def main():
     chdir_to_repo_root()
-    matches = git_grep("  *$")
+    # Accept both LF and CRLF working trees so Windows reports the same
+    # trailing whitespace as Linux CI.
+    matches = git_grep("  *\r*$")
     errors = [m for m in matches if m.filename not in exceptions]
     okay = True
 
