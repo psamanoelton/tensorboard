@@ -29,8 +29,8 @@ import sys
 # This is required by patch format and cannot be removed.
 exceptions = frozenset(
     [
-        "patches/protobuf_6_31_1_java_export.patch",
-        "patches/@bazel+concatjs+5.8.1.patch",
+        "patches/protobuf_6_31_1_bzlmod.patch",
+        "patches/rules_web_testing_python_py310.patch",
     ]
 )
 

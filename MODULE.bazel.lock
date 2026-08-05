@@ -1545,7 +1545,6 @@
               "sha256": "581f4d4e872da74b3941c874215898a7d35802f03732bdccee1d4a7979105d18",
               "strip_prefix": "make-4.4",
               "urls": [
-                "https://mirror.bazel.build/ftpmirror.gnu.org/gnu/make/make-4.4.tar.gz",
                 "http://ftpmirror.gnu.org/gnu/make/make-4.4.tar.gz"
               ]
             }
@@ -1637,7 +1636,7 @@
             "ruleClassName": "http_archive",
             "attributes": {
               "urls": [
-                "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz",
+                "http://mirror.tensorflow.org/github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz",
                 "https://github.com/bazelbuild/bazel-skylib/releases/download/1.2.1/bazel-skylib-1.2.1.tar.gz"
               ],
               "sha256": "f7be3474d42aae265405a592bb7da8e171919d74c16f082a5457840f06054728"
@@ -2094,7 +2093,6 @@
               "strip_prefix": "",
               "sha256": "aeb973da474f14210d3e1a1f942dcf779e2ae7e71e4c535e6c53ebabe632cc98",
               "urls": [
-                "https://mirror.bazel.build/strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-64bit.zip",
                 "https://strawberryperl.com/download/5.32.1.1/strawberry-perl-5.32.1.1-64bit.zip"
               ]
             }
