@@ -24,13 +24,20 @@ $ source tf/bin/activate
 ```
 
 TensorBoard builds are done with [Bazel](https://bazel.build). The supported
-version is pinned in `.bazelversion` (currently Bazel 7.7.0), and Bazel 8 is
-intentionally unsupported. TensorBoard uses Bzlmod for dependency resolution;
-legacy builds with `--noenable_bzlmod` are not supported. Some dependencies
-still use legacy repository macros through the transitional `WORKSPACE.bzlmod`
-file. Normal development must not add a second dependency graph to `WORKSPACE`;
-new dependencies should use a BCR module, a module extension, or
-`use_repo_rule` in that order.
+version is pinned in `.bazelversion` (currently Bazel 7.7.0) so local and CI
+builds use the same incompatible-flag behavior and the same validated Bzlmod
+dependency graph. Bazelisk reads this file and selects that version
+automatically. Bazel 8 is intentionally unsupported. TensorBoard uses Bzlmod
+for dependency resolution; legacy builds with `--noenable_bzlmod` are not
+supported. Some dependencies still use legacy repository macros through the
+transitional `WORKSPACE.bzlmod` file. Normal development must not add a second
+dependency graph to `WORKSPACE`; new dependencies should use a BCR module, a
+module extension, or `use_repo_rule` in that order.
+
+Until those transitional repositories are migrated, Bazel must still evaluate
+`WORKSPACE.bzlmod`; therefore, builds must not pass `--noenable_workspace`.
+This compatibility requirement does not make legacy `--noenable_bzlmod` builds
+supported.
 
 The remaining `WORKSPACE.bzlmod` entries are intentional migration exceptions:
 
@@ -50,7 +57,8 @@ The remaining `WORKSPACE.bzlmod` entries are intentional migration exceptions:
 
 `WORKSPACE.bzlmod` should shrink as those projects are completed. A completely
 WORKSPACE-independent build is reached when the following command succeeds;
-it is a migration diagnostic, not yet a supported presubmit command:
+it is a migration diagnostic that is expected to fail today, not a supported
+presubmit command:
 
 ```sh
 (tf)$ bazel test //tensorboard/... --enable_bzlmod --noenable_workspace

@@ -28,6 +28,8 @@ EOF
 }
 
 # Resolve an apparent repository path through Bazel's Bzlmod runfiles mapping.
+# See https://bazel.build/external/overview#concepts for the distinction between
+# apparent and canonical repository names.
 # WORKSPACE runfiles use the apparent name as their directory, while module
 # extension repositories use a canonical name such as
 # `_main~tensorboard_python_dependencies~org_mozilla_bleach`.

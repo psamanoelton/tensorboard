@@ -107,18 +107,21 @@ To regenerate:
 - `MODULE.bazel`
 
 **What it does:**
-- Restores protobuf's system-Python repository when protobuf 6.31.1 is consumed
-  through its source `MODULE.bazel`. The upstream module currently aliases that
-  name to a rules_python toolchain repository, which does not provide the
-  `version.bzl` and Python-header targets that protobuf's public Python build
-  expects.
-- Makes protobuf's pip module extension available to consumers. Its
-  `//python/dist` package loads `@protobuf_pip_deps`, so marking that extension
-  as development-only leaves the repository unmapped in TensorBoard's module
-  graph.
+This patch fixes two downstream-consumer issues in protobuf 6.31.1's own
+`MODULE.bazel`. Protobuf supports Bazel, but its public `//python/dist` targets
+depend on repositories that this release's module metadata does not expose
+correctly when protobuf is a dependency rather than the root module:
 
-Removal is planned once the protobuf module provides these repositories to
-downstream consumers without a source override.
+- The apparent `@system_python` name points to a rules_python toolchain
+  repository, which does not provide the `version.bzl` and Python-header
+  targets that `//python/dist` expects. The patch creates protobuf's intended
+  system-Python repository under that name instead.
+- `//python/dist` loads `@protobuf_pip_deps`, but protobuf declares the pip
+  extension that creates it as development-only. The patch makes the extension
+  available to downstream modules such as TensorBoard.
+
+Removal is planned once protobuf's own module metadata provides both
+repositories to downstream consumers without a source override.
 
 
 ## `rules_cc_protobuf.patch`
