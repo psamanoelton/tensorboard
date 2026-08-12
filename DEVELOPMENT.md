@@ -85,6 +85,15 @@ pip-package smoke test separately exercises the CI-selected version, currently
     tensorboard/pip_package/requirements_bazel.in
 ```
 
+The Flogger artifacts used by TensorBoard's customized Soy repository are
+resolved through the `rules_jvm_external` module extension and pinned in
+`maven_install.json`. After changing their coordinates in `MODULE.bazel`,
+regenerate that lockfile with:
+
+```sh
+(tf)$ REPIN=1 bazel run @tensorboard_maven//:pin
+```
+
 The Bazel build will automatically "vulcanize" all the HTML files and generate
 a "binary" launcher script. When HTML is vulcanized, it means all the script
 tags and HTML imports are inlined into one big HTML file. Then the Bazel build

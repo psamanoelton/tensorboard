@@ -12,7 +12,23 @@ module(
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(name = "rules_cc", version = "0.1.1")
 bazel_dep(name = "rules_java", version = "8.6.1")
+bazel_dep(name = "rules_jvm_external", version = "6.7")
 bazel_dep(name = "rules_python", version = "1.0.0")
+
+# Resolve TensorBoard's Flogger artifacts through a module extension while
+# preserving the versions used by the existing Closure/Soy toolchain.
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    name = "tensorboard_maven",
+    artifacts = [
+        "com.google.flogger:flogger:0.5.1",
+        "com.google.flogger:flogger-system-backend:0.5.1",
+        "com.google.flogger:google-extensions:0.5.1",
+    ],
+    lock_file = "//:maven_install.json",
+    repositories = ["https://repo1.maven.org/maven2"],
+)
+use_repo(maven, "tensorboard_maven")
 
 # Functional browser tests use rules_webtesting. Its module owns the Go,
 # Gazelle, and Python support repositories that the legacy WORKSPACE setup had

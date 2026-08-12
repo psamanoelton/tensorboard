@@ -53,38 +53,6 @@ local_repository(
 )
 
 java_import_external(
-    name = "com_google_flogger_flogger",
-    jar_sha256 = "b5ecd1483e041197012786f749968a62063c1964d3ecfbf96ba92a95797bb8f5",
-    jar_urls = [
-        "http://mirror.tensorflow.org/repo1.maven.org/maven2/com/google/flogger/flogger/0.5.1/flogger-0.5.1.jar",
-        "https://repo1.maven.org/maven2/com/google/flogger/flogger/0.5.1/flogger-0.5.1.jar",
-    ],
-    licenses = ["notice"],
-)
-
-java_import_external(
-    name = "com_google_flogger_google_extensions",
-    jar_sha256 = "8b0862cad85b9549f355fe383c6c63816d2f19529634e033ae06d0107ab110b9",
-    jar_urls = [
-        "http://mirror.tensorflow.org/repo1.maven.org/maven2/com/google/flogger/google-extensions/0.5.1/google-extensions-0.5.1.jar",
-        "https://repo1.maven.org/maven2/com/google/flogger/google-extensions/0.5.1/google-extensions-0.5.1.jar",
-    ],
-    licenses = ["notice"],
-    deps = ["@com_google_flogger_flogger"],
-)
-
-java_import_external(
-    name = "com_google_flogger_flogger_system_backend",
-    jar_sha256 = "685de33b53eb313049bbeee7f4b7a80dd09e8e754e96b048a3edab2cebb36442",
-    jar_urls = [
-        "http://mirror.tensorflow.org/repo1.maven.org/maven2/com/google/flogger/flogger-system-backend/0.5.1/flogger-system-backend-0.5.1.jar",
-        "https://repo1.maven.org/maven2/com/google/flogger/flogger-system-backend/0.5.1/flogger-system-backend-0.5.1.jar",
-    ],
-    licenses = ["notice"],
-    deps = ["@com_google_flogger_flogger"],
-)
-
-java_import_external(
     name = "com_google_template_soy",
     extra_build_file_content = "\n".join([
         ("java_binary(\n" +
@@ -110,9 +78,6 @@ java_import_external(
         "@com_google_code_findbugs_jsr305",
         "@com_google_code_gson",
         "@com_google_common_html_types",
-        "@com_google_flogger_flogger",
-        "@com_google_flogger_flogger_system_backend",
-        "@com_google_flogger_google_extensions",
         "@com_google_guava",
         "@com_google_inject_extensions_guice_assistedinject",
         "@com_google_inject_extensions_guice_multibindings",
@@ -125,6 +90,9 @@ java_import_external(
         "@org_ow2_asm_analysis",
         "@org_ow2_asm_commons",
         "@org_ow2_asm_util",
+        "@tensorboard_maven//:com_google_flogger_flogger",
+        "@tensorboard_maven//:com_google_flogger_flogger_system_backend",
+        "@tensorboard_maven//:com_google_flogger_google_extensions",
     ],
 )
 
