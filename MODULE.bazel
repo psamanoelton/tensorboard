@@ -15,11 +15,11 @@ bazel_dep(name = "rules_java", version = "8.6.1")
 bazel_dep(name = "rules_jvm_external", version = "6.7")
 bazel_dep(name = "rules_python", version = "1.0.0")
 
-# Resolve TensorBoard's Flogger artifacts through a module extension while
-# preserving the versions used by the existing Closure/Soy toolchain.
+# Resolve TensorBoard's Java dependencies through a module extension.
 maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
 maven.install(
     name = "tensorboard_maven",
+    # Preserve the Flogger versions used by the existing Closure/Soy toolchain.
     artifacts = [
         "com.google.flogger:flogger:0.5.1",
         "com.google.flogger:flogger-system-backend:0.5.1",
