@@ -17,6 +17,12 @@ test --incompatible_default_to_explicit_init_py
 # which is much faster (~10x).
 build --define=use_fast_cpp_protos=true
 
+# Use Bazel's hermetic JDK 21 for Java targets and build tools. The default
+# target runtime is the host JDK, which can be newer than Bazel 7's Java
+# compiler and make otherwise unrelated Java compilation fail.
+build --java_runtime_version=remotejdk_21
+build --tool_java_runtime_version=remotejdk_21
+
 # Protobuf 6.31.1 requires C++17 in this build. Keep the host and target
 # language level aligned across supported platforms.
 common:linux --cxxopt=-std=c++17
