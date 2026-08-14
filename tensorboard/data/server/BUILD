@@ -156,18 +156,18 @@ genrule(
         "//tensorboard/data/proto:proto_srcs",
         "//tensorboard/plugins/audio:proto_srcs",
         "//tensorboard/plugins/image:proto_srcs",
-        "@com_google_protobuf//:well_known_protos",
+        "@com_google_protobuf//:well_known_type_protos",
     ],
     outs = _genproto_files + [_generated_file_descriptor_set],
     cmd = """
         die() { printf >&2 'fatal: %s\\n' "$$@"; exit 1; }
         export PROTOC=$(execpath @com_google_protobuf//:protoc)
-        # The `:well_known_protos` fileset has source files in the `src/`
+        # The `:well_known_type_protos` fileset has source files in the `src/`
         # directory under the genfiles tree for its workspace. Bazel variable
         # expansion doesn't provide a way to get that directly (it's not a
         # target), but we can extract it from the files themselves.
         f=
-        for f in $(locations @com_google_protobuf//:well_known_protos); do
+        for f in $(locations @com_google_protobuf//:well_known_type_protos); do
             break  # just take one arbitrarily
         done
         [ -n "$${f}" ] || die 'no well-known protos in fileset'

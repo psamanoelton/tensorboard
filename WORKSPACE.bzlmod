@@ -22,7 +22,6 @@ http_archive(
     sha256 = "b2519fabcd360529071ade8732f208b3755489ed7668b118f8f90985c0e51324",
     strip_prefix = "rules_java-8.6.1",
     urls = [
-        "https://storage.googleapis.com/mirror.tensorflow.org/github.com/bazelbuild/rules_java/archive/refs/tags/8.6.1.tar.gz",
         "https://github.com/bazelbuild/rules_java/archive/refs/tags/8.6.1.tar.gz",
     ],
 )
