@@ -1,12 +1,17 @@
 # safe_html_types vendor note
 
-This directory vendors the Java `com.google.common.html.types` classes needed by
-TensorBoard's existing Closure / Soy toolchain during the Bazel 7.7.0 and
-protobuf 6.31.1 migration.
+This directory vendors the Java `com.google.common.html.types` classes used by
+the pre-Bzlmod Closure / Soy toolchain during the Bazel 7.7.0 and protobuf
+6.31.1 migration.
+
+The Bazel 8.7 module graph does not reference this repository. It is reachable
+only from the disabled legacy `WORKSPACE` file and is retained temporarily so
+its removal can be reviewed separately from the active build migration.
 
 Why this exists:
 
-- TensorBoard still uses `rules_closure` / Soy tooling in Bazel.
+- TensorBoard still uses `rules_closure` / Soy tooling in Bazel, but its active
+  module graph resolves safe-html-types without this local repository.
 - Upgrading protobuf to `6.31.1` exposed Java-side incompatibilities in the
   older transitive safe-html-types classes used by that toolchain.
 - TensorFlow 2.21 already aligns on protobuf `6.31.1`, so TensorBoard needs a
@@ -21,35 +26,34 @@ What is vendored here:
 
 What is special about this copy:
 
-- It is used as a local Bazel repository via `WORKSPACE`.
-- It is intended to satisfy the Closure / Soy Java dependency graph during the
-  migration, not to change TensorBoard's Python/runtime behavior directly.
+- It was used as a local Bazel repository via `WORKSPACE`.
+- It was intended to satisfy the Closure / Soy Java dependency graph during
+  the migration, not to change TensorBoard's Python/runtime behavior directly.
 - Some files in this tree were adjusted so the Java code works with the newer
   protobuf APIs expected by TensorBoard's current toolchain.
 
 Why this is safe:
 
-- this code participates in the Bazel Java/Soy build path, not TensorBoard's
-  Python runtime or wheel behavior directly
-- TensorBoard uses it to replace an older transitive Java dependency with a
-  protobuf-6-compatible copy
+- when the legacy `WORKSPACE` path is enabled, this code participates in the
+  Bazel Java/Soy build path, not TensorBoard's Python runtime or wheel behavior
+- the current Bzlmod build does not load these sources
 - the functional TensorBoard changes in this PR live elsewhere; this directory
   is primarily a compatibility dependency for the existing build toolchain
 
 Why this is a local repository instead of an `http_archive` here:
 
-- TensorBoard needs an adjusted protobuf-6-compatible copy of the classes
-- the current PR does not yet identify an exact upstream source archive that
-  works unchanged with the rest of the Closure/Soy dependency stack
-- using a local repository keeps the dependency explicit and reviewable while
-  the wider Bazel/protobuf migration is being stabilized
+- the legacy build needed an adjusted protobuf-6-compatible copy of the classes
+- at the time, no exact upstream source archive worked unchanged with the rest
+  of the Closure/Soy dependency stack
+- the local repository kept the compatibility dependency reviewable while the
+  Bazel/protobuf migration was being stabilized
 
 Reviewer note:
 
 Most of the line-count increase in this PR comes from this vendored directory.
 The functional Bazel/TensorBoard migration logic is concentrated in:
 
-- `WORKSPACE`
+- `MODULE.bazel`
 - `.bazelrc`
 - `tensorboard/defs/protos.bzl`
 - `tensorboard/compat/BUILD`

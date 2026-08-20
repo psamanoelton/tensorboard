@@ -262,6 +262,33 @@ bazel_dep(
 # rules_nodejs 5.8.1 compatibility repository instantiated below.
 bazel_dep(name = "aspect_rules_js", version = "3.4.0")
 
+# Modern TypeScript rules are introduced alongside the legacy concatjs
+# ts_library stack so leaf targets can migrate incrementally. The extension
+# imports the exact TypeScript version pinned in package.json without creating
+# a second full node_modules repository.
+bazel_dep(name = "aspect_rules_ts", version = "3.10.0")
+
+rules_ts = use_extension("@aspect_rules_ts//ts:extensions.bzl", "typescript")
+rules_ts.deps(version_from = "//:package.json")
+use_repo(rules_ts, "npm_typescript")
+
+# Seed the rules_js package-manager migration under a separate repository.
+# The working legacy yarn_install repository remains @npm until all consumers
+# have moved away from rules_nodejs providers.
+pnpm = use_extension("@aspect_rules_js//npm:extensions.bzl", "pnpm")
+pnpm.pnpm(
+    name = "pnpm",
+    pnpm_version = "10.34.5",
+)
+use_repo(pnpm, "pnpm")
+
+npm_modern = use_extension("@aspect_rules_js//npm:extensions.bzl", "npm")
+npm_modern.npm_translate_lock(
+    name = "npm_modern",
+    pnpm_lock = "//third_party/npm_modern:pnpm-lock.yaml",
+)
+use_repo(npm_modern, "npm_modern")
+
 # rules_nodejs 5.8.1 is no longer published as a Bazel module, but TensorBoard's
 # patched concatjs/Angular pipeline still loads Starlark APIs from its npm
 # packages. Instantiate that compatibility ruleset through Bzlmod while the

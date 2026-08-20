@@ -13,6 +13,7 @@
 # limitations under the License.
 """External-only delegates for various BUILD rules."""
 
+load("@aspect_rules_ts//ts:defs.bzl", "ts_project")
 load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
 load("@npm//@angular/build-tooling/bazel:extract_js_module_output.bzl", "extract_js_module_output")
 load("@npm//@angular/build-tooling/bazel/app-bundling:index.bzl", "app_bundle")
@@ -175,6 +176,30 @@ def tf_ts_library(srcs = [], strict_checks = True, **kwargs):
         prodmode_target = "es2020",
         devmode_target = "es2020",
         devmode_module = "esnext",
+        **kwargs
+    )
+
+def tf_ts_project(srcs = [], strict_checks = True, **kwargs):
+    """TensorBoard wrapper for TypeScript targets migrated to rules_ts.
+
+    This wrapper intentionally coexists with tf_ts_library while the legacy
+    concatjs and Angular provider graph is still in use. Start with leaf
+    targets; modern JsInfo outputs cannot be consumed by legacy ts_library.
+
+    Args:
+      srcs: TypeScript sources compiled by ts_project.
+      strict_checks: whether to use TensorBoard's strict TypeScript config.
+      **kwargs: keyword arguments forwarded to ts_project.
+    """
+    tsconfig = "//:tsconfig-rules-ts"
+    if strict_checks == False:
+        tsconfig = "//:tsconfig-lax-rules-ts"
+    kwargs.setdefault("deps", []).append("//third_party/npm_modern:node_modules/tslib")
+
+    ts_project(
+        srcs = srcs,
+        transpiler = "tsc",
+        tsconfig = tsconfig,
         **kwargs
     )
 

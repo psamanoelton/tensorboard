@@ -3,11 +3,11 @@
 We use [patch-package](https://www.npmjs.com/package/patch-package) to author
 TensorBoard-specific patches to some of our npm/yarn dependencies.
 
-At build time, `WORKSPACE` and the transitional `WORKSPACE.bzlmod` apply the
-generated patch artifacts via `yarn_install(post_install_patches = ...)`
-instead of invoking `patch-package` inside the repository rule. In the current
-Bazel/CI setup, that install-time invocation was less reliable than applying
-the generated patch files directly.
+At build time, the `tensorboard_node_dependencies` module extension in
+`third_party/nodejs_extensions.bzl` applies the generated patch artifacts via
+`yarn_install(post_install_patches = ...)` instead of invoking `patch-package`
+inside the repository rule. In the current Bazel/CI setup, that install-time
+invocation was less reliable than applying the generated patch files directly.
 
 After creating or updating a patch, ensure there is no trailing whitespace on
 any line (CI runs `./tensorboard/tools/whitespace_hygiene_test.py`). You can
@@ -61,7 +61,7 @@ To regenerate:
 * make edits
 * `yarn patch-package "@bazel/concatjs" --exclude '^$'` (the `--exclude` is
   required, otherwise the `package.json` hunk is dropped)
-* update the WORKSPACE file with the name of the new patch file
+* update `third_party/nodejs_extensions.bzl` with the new patch file name
 
 
 ## `@angular+build-tooling+0.0.0-98b30ab5fdeeb1df3278f5257b9a8f07abb76941.patch`
@@ -75,8 +75,8 @@ function calls that TensorBoard depends on at runtime. Without this, the app
 bundles to a blank page with no console error. The resulting bundle is larger.
 
 Note the patch file name tracks the pinned `@angular/build-tooling` commit, so it
-has to be renamed (and the WORKSPACE reference updated) whenever that dependency
-is bumped.
+has to be renamed (and the module-extension reference updated) whenever that
+dependency is bumped.
 
 Removal is planned along with the concatjs patch. `@angular/build-tooling` is
 frozen upstream, and both patches only go away once the frontend build moves off
@@ -86,7 +86,7 @@ To regenerate:
 * `vi node_modules/@angular/build-tooling/shared-scripts/angular-optimization/esbuild-plugin.mjs`
 * make edits
 * `yarn patch-package "@angular/build-tooling"`
-* update the WORKSPACE file with the name of the new patch file
+* update `third_party/nodejs_extensions.bzl` with the new patch file name
 
 
 ## `protobuf_6_31_1_java_export.patch`
