@@ -3,6 +3,10 @@
 # disabled explicitly so new dependencies cannot silently bypass MODULE.bazel.
 common --enable_bzlmod
 common --noenable_workspace
+
+# Keep local and CI builds from reporting ruleset usage through telemetry
+# introduced by newer Aspect build rules.
+common --repo_env=DO_NOT_TRACK=1
 # Let the OS-specific sections below (`common:linux`, `common:macos`, etc.)
 # take effect so one `.bazelrc` can carry the required per-platform C++ flags.
 common --enable_platform_specific_config

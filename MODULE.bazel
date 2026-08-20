@@ -72,6 +72,12 @@ bazel_dep(
     version = "0.16.0",
     repo_name = "io_bazel_rules_closure",
 )
+single_version_override(
+    module_name = "rules_closure",
+    patch_strip = 1,
+    patches = ["//patches:rules_closure_java_proto_library.patch"],
+    version = "0.16.0",
+)
 
 # TensorBoard's Vulcanize tool imports Guava directly. Declare the same module
 # used by rules_closure so strict Java dependencies do not rely on transitives.
@@ -254,7 +260,7 @@ bazel_dep(
 # resolves the module-native rules_nodejs toolchain used by rules_js itself.
 # TensorBoard's legacy Yarn/concatjs integration still requires the separate
 # rules_nodejs 5.8.1 compatibility repository instantiated below.
-bazel_dep(name = "aspect_rules_js", version = "2.1.0")
+bazel_dep(name = "aspect_rules_js", version = "3.4.0")
 
 # rules_nodejs 5.8.1 is no longer published as a Bazel module, but TensorBoard's
 # patched concatjs/Angular pipeline still loads Starlark APIs from its npm

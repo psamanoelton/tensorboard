@@ -52,3 +52,48 @@ index a8397f2..b04b901 100644
 @@ -493,1 +493,1 @@
 -      process.cwd(), '../build_bazel_rules_nodejs/third_party/github.com/source-map-support');
 +      process.cwd(), '../+_repo_rules+build_bazel_rules_nodejs/third_party/github.com/source-map-support');
+diff --git a/internal/common/copy_to_bin.bzl b/internal/common/copy_to_bin.bzl
+index d82a97a..2e1ef41 100644
+--- a/internal/common/copy_to_bin.bzl
++++ b/internal/common/copy_to_bin.bzl
+@@ -61 +61 @@ def copy_to_bin_action(ctx, files):
+-            "@bazel_tools//src/conditions:host_windows": True,
++            "@platforms//os:windows": True,
+diff --git a/internal/common/params_file.bzl b/internal/common/params_file.bzl
+index 95e9d19..858b8c7 100644
+--- a/internal/common/params_file.bzl
++++ b/internal/common/params_file.bzl
+@@ -128 +128 @@ def params_file_action(ctx, executable, args, params_file, mnemonic = None, progre
+-            "@bazel_tools//src/conditions:host_windows": True,
++            "@platforms//os:windows": True,
+diff --git a/internal/js_library/js_library.bzl b/internal/js_library/js_library.bzl
+index 56c986b..fb7610a 100644
+--- a/internal/js_library/js_library.bzl
++++ b/internal/js_library/js_library.bzl
+@@ -420 +420 @@ def js_library(name, srcs = [], deps = [], package_name = None, package_path = No
+-            "@bazel_tools//src/conditions:host_windows": True,
++            "@platforms//os:windows": True,
+diff --git a/internal/linker/npm_link.bzl b/internal/linker/npm_link.bzl
+index 230615a..d45aee7 100644
+--- a/internal/linker/npm_link.bzl
++++ b/internal/linker/npm_link.bzl
+@@ -154 +154 @@ def npm_link(name, package_name, package_path, root_package, src, deps = [], visib
+-            "@bazel_tools//src/conditions:host_windows": True,
++            "@platforms//os:windows": True,
+diff --git a/internal/pkg_npm/pkg_npm.bzl b/internal/pkg_npm/pkg_npm.bzl
+index 5961706..ed3f6ad 100644
+--- a/internal/pkg_npm/pkg_npm.bzl
++++ b/internal/pkg_npm/pkg_npm.bzl
+@@ -376 +376 @@ def pkg_npm(name, srcs = [], deps = [], substitutions = {}, package_name = None,
+-            "@bazel_tools//src/conditions:host_windows": name + ".pack.bat",
++            "@platforms//os:windows": name + ".pack.bat",
+@@ -384 +384 @@ def pkg_npm(name, srcs = [], deps = [], substitutions = {}, package_name = None,
+-            "@bazel_tools//src/conditions:host_windows": name + ".publish.bat",
++            "@platforms//os:windows": name + ".publish.bat",
+diff --git a/third_party/github.com/bazelbuild/bazel-skylib/rules/private/copy_file_private.bzl b/third_party/github.com/bazelbuild/bazel-skylib/rules/private/copy_file_private.bzl
+index e538951..df936d9 100644
+--- a/third_party/github.com/bazelbuild/bazel-skylib/rules/private/copy_file_private.bzl
++++ b/third_party/github.com/bazelbuild/bazel-skylib/rules/private/copy_file_private.bzl
+@@ -206 +206 @@ def copy_file(name, src, out, is_executable = False, allow_symlink = False, is_di
+-            "@bazel_tools//src/conditions:host_windows": True,
++            "@platforms//os:windows": True,

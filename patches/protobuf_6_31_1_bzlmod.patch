@@ -35,3 +35,10 @@ index 390bf3c..76f80fb 100644
 +
  cc_library(
     name = "python_headers",
+diff --git a/python/internal.bzl b/python/internal.bzl
+index b9ded91..ec5831d 100644
+--- a/python/internal.bzl
++++ b/python/internal.bzl
+@@ -117 +117 @@ def internal_copy_files(name, srcs, strip_prefix, visibility = None):
+-            "@bazel_tools//src/conditions:host_windows": True,
++            "@platforms//os:windows": True,

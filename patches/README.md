@@ -105,6 +105,7 @@ To regenerate:
 
 **Modified files:**
 - `MODULE.bazel`
+- `python/internal.bzl`
 
 **What it does:**
 This patch fixes two downstream-consumer issues in protobuf 6.31.1's own
@@ -119,6 +120,8 @@ correctly when protobuf is a dependency rather than the root module:
 - `//python/dist` loads `@protobuf_pip_deps`, but protobuf declares the pip
   extension that creates it as development-only. The patch makes the extension
   available to downstream modules such as TensorBoard.
+- Replaces protobuf's deprecated Bazel host-Windows selector with the
+  platform constraint supported by Bazel 8.
 
 Removal is planned once protobuf's own module metadata provides both
 repositories to downstream consumers without a source override.
@@ -162,6 +165,43 @@ repositories to downstream consumers without a source override.
 
 Removal is planned when TensorBoard moves to a module-native Closure release
 whose public definitions no longer load the legacy web-testing setup.
+
+
+## `rules_closure_java_proto_library.patch`
+
+**Modified files:**
+- `java/io/bazel/rules/closure/BUILD`
+- `java/io/bazel/rules/closure/webfiles/BUILD`
+- `java/io/bazel/rules/closure/webfiles/server/BUILD`
+
+**What it does:**
+- Loads `java_proto_library` from protobuf's supported Bazel API instead of
+  the deprecated compatibility export in `rules_java`.
+- Removes the associated Bazel 8 deprecation warnings from TensorBoard's
+  Closure and Vulcanize targets.
+
+Removal is planned once rules_closure publishes this migration upstream.
+
+
+## `rules_nodejs_5_8_1_bzlmod.patch`
+
+**Modified areas:**
+- npm repository generation and repository-label handling
+- Node launcher and source-map runfiles lookup
+- esbuild toolchain registration
+- legacy host-Windows selectors
+
+**What it does:**
+- Makes rules_nodejs 5.8.1's repository rules and launchers understand
+  canonical Bzlmod repository names.
+- Lets TensorBoard register the generated esbuild toolchains from
+  `MODULE.bazel`.
+- Replaces deprecated Bazel host-Windows selectors with platform constraints,
+  eliminating warnings from generated npm targets on Bazel 8.
+
+Removal is planned as one coordinated migration from Yarn, concatjs,
+`ts_library`, and the pinned Angular bundling/test helpers to rules_js,
+rules_ts, and maintained bundling/test rules.
 
 
 ## `rules_web_testing_python_py310.patch`
