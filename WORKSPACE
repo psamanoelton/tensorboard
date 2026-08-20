@@ -1,7 +1,7 @@
-# Legacy `--noenable_bzlmod` builds are no longer supported. Bazel 7.7.0 reads
-# MODULE.bazel and WORKSPACE.bzlmod for supported TensorBoard builds. This file
-# remains temporarily because repository checks and downstream tooling still
-# inspect the legacy declarations.
+# Legacy `--noenable_bzlmod` builds are no longer supported. Bazel 8 resolves
+# supported TensorBoard builds entirely from MODULE.bazel and does not evaluate
+# this file. It remains temporarily for downstream tooling that inspects legacy
+# declarations.
 workspace(name = "org_tensorflow_tensorboard")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
@@ -25,10 +25,10 @@ versions.check(
     # Preemptively assume the next Bazel major version will break us, since historically they do,
     # and provide a clean error message in that case. Since the maximum version is inclusive rather
     # than exclusive, we set it to the 999th patch release of the current major version.
-    maximum_bazel_version = "7.999.0",
+    maximum_bazel_version = "8.999.0",
     # Keep this version in sync with:
     #  * The BAZEL environment variable defined in .github/workflows/ci.yml, which is used for CI and nightly builds.
-    minimum_bazel_version = "7.7.0",
+    minimum_bazel_version = "8.0.0",
 )
 
 http_archive(
@@ -384,17 +384,6 @@ http_archive(
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
 grpc_deps()
-
-http_archive(
-    name = "rules_rust",
-    sha256 = "08109dccfa5bbf674ff4dba82b15d40d85b07436b02e62ab27e0b894f45bb4a3",
-    strip_prefix = "rules_rust-d5ab4143245af8b33d1947813d411a6cae838409",
-    urls = [
-        # Pinned to this upstream commit as of 2022-01-31
-        "http://mirror.tensorflow.org/github.com/bazelbuild/rules_rust/archive/d5ab4143245af8b33d1947813d411a6cae838409.tar.gz",
-        "https://github.com/bazelbuild/rules_rust/archive/d5ab4143245af8b33d1947813d411a6cae838409.tar.gz",
-    ],
-)
 
 load("@io_bazel_rules_webtesting//web:go_repositories.bzl", "go_internal_repositories", "go_repositories")
 

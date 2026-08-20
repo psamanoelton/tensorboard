@@ -21,7 +21,6 @@ load("@io_bazel_rules_webtesting//web/versioned:browsers-0.3.4.bzl", "browser_re
 load("//third_party:fonts.bzl", "tensorboard_fonts_workspace")
 load("//third_party:js.bzl", "tensorboard_js_workspace")
 load("//third_party:python.bzl", "tensorboard_python_workspace")
-load("//third_party:rust.bzl", "tensorboard_rust_workspace")
 
 def tensorboard_workspace(name = ""):
     """Add repositories needed to build TensorBoard.
@@ -32,7 +31,6 @@ def tensorboard_workspace(name = ""):
     tensorboard_fonts_workspace()
     tensorboard_python_workspace()
     tensorboard_js_workspace()
-    tensorboard_rust_workspace()
 
     # Needed by Protobuf.
     native.bind(

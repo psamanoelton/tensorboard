@@ -215,7 +215,7 @@ def tf_ng_web_test_suite(name, deps = [], external = [], **kwargs):
     spec_bundle(
         name = "%s_bundle" % name,
         deps = ["%s_devmode_deps" % name],
-        # Bazel 7 Bzlmod uses `_main` as the main repository's canonical
+        # Bzlmod uses `_main` as the main repository's canonical
         # runfiles name. This must match the paths that karma_web_test_suite
         # asks RequireJS to load.
         workspace_name = "_main",
@@ -243,7 +243,7 @@ def tf_ng_web_test_suite(name, deps = [], external = [], **kwargs):
         ],
         # rules_nodejs passes this through to rules_webtesting. An empty dict
         # avoids forwarding a stray None-valued attribute to web_test under
-        # Bazel 7.7.0 with the currently pinned rules_webtesting stack.
+        # the currently pinned rules_webtesting stack.
         browser_overrides = {},
     )
 
