@@ -1,6 +1,6 @@
 # Bazel 8.7.0 remains pinned in .bazelversion. Bzlmod is TensorBoard's only
-# supported dependency-resolution entry point; WORKSPACE evaluation is kept
-# disabled explicitly so new dependencies cannot silently bypass MODULE.bazel.
+# supported dependency-resolution entry point. Keep WORKSPACE evaluation
+# disabled so new dependencies cannot silently bypass MODULE.bazel.
 common --enable_bzlmod
 common --noenable_workspace
 

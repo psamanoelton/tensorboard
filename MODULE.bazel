@@ -9,11 +9,12 @@ module(
 
 # Keep Bazel itself pinned in .bazelversion. This module graph is intentionally
 # constrained to dependencies that support Bazel 8.7.0.
-bazel_dep(name = "bazel_skylib", version = "1.8.2")
-bazel_dep(name = "rules_cc", version = "0.1.1")
-bazel_dep(name = "rules_java", version = "8.14.0")
-bazel_dep(name = "rules_jvm_external", version = "6.7")
-bazel_dep(name = "rules_python", version = "1.0.0")
+bazel_dep(name = "bazel_skylib", version = "1.9.2")
+bazel_dep(name = "rules_cc", version = "0.2.22")
+bazel_dep(name = "rules_java", version = "9.8.0")
+bazel_dep(name = "rules_jvm_external", version = "7.1")
+bazel_dep(name = "rules_python", version = "2.3.1")
+bazel_dep(name = "rules_shell", version = "0.8.0")
 bazel_dep(name = "platforms", version = "1.1.0")
 
 # Build Rustboard with the current module-native rules_rust stack. Keep the
@@ -117,6 +118,7 @@ bazel_dep(
     version = "0.4.1",
     repo_name = "io_bazel_rules_webtesting",
 )
+
 # rules_web_testing_java and grpc-java contribute to the same Maven repository.
 # Align their direct Guava coordinate with the newer artifact already selected
 # by grpc-java so rules_jvm_external does not report a duplicate root version.
@@ -126,6 +128,7 @@ single_version_override(
     patches = ["//patches:rules_web_testing_java_guava.patch"],
     version = "0.4.1",
 )
+
 bazel_dep(name = "rules_web_testing_python", version = "0.4.1")
 archive_override(
     module_name = "rules_web_testing_python",
@@ -219,49 +222,30 @@ use_repo(
     "com_google_material_design_icon",
 )
 
-single_version_override(
-    module_name = "rules_cc",
-    # 0.1.0 is yanked in the BCR because it removed cc_proto_library.
-    # TensorBoard patched that API back in WORKSPACE mode; 0.1.1 contains the
-    # upstream fix and is the smallest usable module version.
-    version = "0.1.1",
-)
-
-# Protobuf 31.1 is the Bazel module version for the protobuf 6.31.1 release
-# required by TensorFlow 2.21. Keep the historical apparent repository names
-# used throughout TensorBoard's BUILD files.
+# Protobuf 33.6 is the newest release that retains gRPC 1.76's public UPB
+# Starlark API. Protobuf 34 removed that API, while 35 and 36 also evaluate a
+# transitive Rust extension without its required lockfile. Keep TensorBoard's
+# historical apparent repository name.
 bazel_dep(
     name = "protobuf",
-    version = "31.1",
+    version = "33.6",
     repo_name = "com_google_protobuf",
 )
-archive_override(
+single_version_override(
     module_name = "protobuf",
-    integrity = "sha256-bgm7yVC6YMOnswKAIQzSha+NfY7V4KbtEBxyr/IujYg=",
     patch_strip = 1,
-    patches = [
-        "//patches:protobuf_6_31_1_bzlmod.patch",
-        "//patches:protobuf_6_31_1_java_export.patch",
-    ],
-    strip_prefix = "protobuf-6.31.1",
-    urls = [
-        "https://storage.googleapis.com/mirror.tensorflow.org/github.com/protocolbuffers/protobuf/archive/refs/tags/v6.31.1.zip",
-        "https://github.com/protocolbuffers/protobuf/archive/refs/tags/v6.31.1.zip",
-    ],
+    patches = ["//patches:protobuf_33_6_bzlmod.patch"],
+    version = "33.6",
 )
 
 bazel_dep(
     name = "grpc",
-    version = "1.74.0",
+    version = "1.76.0.bcr.1",
     repo_name = "com_github_grpc_grpc",
 )
-
-# A transitive grpc-java 1.66 module imports repositories that gRPC 1.74 no
-# longer generates. grpc-java 1.69 moved those repositories to normal module
-# dependencies and is the smallest compatible graph correction.
 bazel_dep(
     name = "grpc-java",
-    version = "1.69.0",
+    version = "1.82.0",
     repo_name = "io_grpc_grpc_java",
 )
 

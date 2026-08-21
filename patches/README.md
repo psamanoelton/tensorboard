@@ -89,82 +89,22 @@ To regenerate:
 * update `third_party/nodejs_extensions.bzl` with the new patch file name
 
 
-## `protobuf_6_31_1_java_export.patch`
-
-**Modified files:**
-- `build_defs/java_opts.bzl`
-- `bazel/private/proto_library_rule.bzl`
-
-**What it does:**
-- Drops the older javadocopts workaround from protobuf's Java export helper on
-  the current rules_java/protobuf stack.
-- Relaxes the import-prefix normalization check so empty-but-normalized values
-  continue to work under the newer path handling used here.
-
-## `protobuf_6_31_1_bzlmod.patch`
+## `protobuf_33_6_bzlmod.patch`
 
 **Modified files:**
 - `MODULE.bazel`
-- `python/internal.bzl`
 
 **What it does:**
-This patch fixes two downstream-consumer issues in protobuf 6.31.1's own
-`MODULE.bazel`. Protobuf supports Bazel, but its public `//python/dist` targets
-depend on repositories that this release's module metadata does not expose
-correctly when protobuf is a dependency rather than the root module:
+- Exposes protobuf's system-Python and pip repositories to downstream modules;
+  upstream marks both development-only even though public Python build targets
+  load them.
+- Gives protobuf's pinned Maven install its own generated repository while
+  preserving protobuf's internal `@maven` apparent name. Starting in protobuf
+  32, the install uses the shared default name and its lockfile excludes Java
+  dependencies contributed by rules_closure and grpc-java.
 
-- The apparent `@system_python` name points to a rules_python toolchain
-  repository, which does not provide the `version.bzl` and Python-header
-  targets that `//python/dist` expects. The patch creates protobuf's intended
-  system-Python repository under that name instead.
-- `//python/dist` loads `@protobuf_pip_deps`, but protobuf declares the pip
-  extension that creates it as development-only. The patch makes the extension
-  available to downstream modules such as TensorBoard.
-- Replaces protobuf's deprecated Bazel host-Windows selector with the
-  platform constraint supported by Bazel 8.
-
-Removal is planned once protobuf's own module metadata provides both
-repositories to downstream consumers without a source override.
-
-
-## `rules_cc_protobuf.patch`
-
-**Modified files:**
-- `cc/defs.bzl`
-
-**What it does:**
-- Re-exports `cc_proto_library` from protobuf's Bazel definitions so callers on
-  this repository can keep loading the symbol through `rules_cc` while using the
-  protobuf 6.31.1 repository layout.
-
-
-## `rules_closure_soy_cli.patch`
-
-**Modified files:**
-- `closure/templates/closure_java_template_library.bzl`
-
-**What it does:**
-- Updates rules_closure's Soy invocation for the compiler/jar combination used
-  here.
-- Switches to the `--depHeaders` flag expected by this compiler and drops the
-  older `--allowExternalCalls` flag that is not accepted here.
-
-
-## `rules_closure_bzlmod.patch`
-
-**Modified files:**
-- `closure/defs.bzl`
-
-**What it does:**
-- Removes the unused `setup_web_test_repositories` export from the pinned
-  Closure snapshot. That helper eagerly loads repository macros removed from
-  rules_webtesting 0.4.1, even though TensorBoard never calls the helper.
-- Lets TensorBoard consume `rules_webtesting` and
-  `rules_web_testing_python` as Bazel modules while retaining the existing
-  Bazel-7-compatible Closure/Soy setup.
-
-Removal is planned when TensorBoard moves to a module-native Closure release
-whose public definitions no longer load the legacy web-testing setup.
+Removal is planned once protobuf exposes its Python repositories and isolates
+its pinned Maven lockfile upstream.
 
 
 ## `rules_closure_java_proto_library.patch`

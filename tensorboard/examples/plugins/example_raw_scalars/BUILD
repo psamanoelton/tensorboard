@@ -6,6 +6,7 @@
 # to define integration tests for TensorBoard itself.
 
 load("@rules_python//python:py_test.bzl", "py_test")
+load("@rules_shell//shell:sh_test.bzl", "sh_test")
 
 package(default_visibility = ["//tensorboard:internal"])
 

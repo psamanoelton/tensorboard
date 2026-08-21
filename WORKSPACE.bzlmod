@@ -1,3 +1,0 @@
-# Intentionally empty. TensorBoard resolves all external repositories from
-# MODULE.bazel. Keep this file only as documentation for older Bazel clients;
-# Bazel 8 builds run with WORKSPACE evaluation disabled.
