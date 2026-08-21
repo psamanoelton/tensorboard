@@ -117,6 +117,15 @@ bazel_dep(
     version = "0.4.1",
     repo_name = "io_bazel_rules_webtesting",
 )
+# rules_web_testing_java and grpc-java contribute to the same Maven repository.
+# Align their direct Guava coordinate with the newer artifact already selected
+# by grpc-java so rules_jvm_external does not report a duplicate root version.
+single_version_override(
+    module_name = "rules_web_testing_java",
+    patch_strip = 1,
+    patches = ["//patches:rules_web_testing_java_guava.patch"],
+    version = "0.4.1",
+)
 bazel_dep(name = "rules_web_testing_python", version = "0.4.1")
 archive_override(
     module_name = "rules_web_testing_python",

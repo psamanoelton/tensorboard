@@ -217,3 +217,20 @@ rules_ts, and maintained bundling/test rules.
 
 Removal is planned when rules_web_testing_python lets the root module select
 the Python version instead of hardcoding it in the dependency module.
+
+
+## `rules_web_testing_java_guava.patch`
+
+**Modified files:**
+- `MODULE.bazel`
+
+**What it does:**
+- Aligns rules_web_testing_java's direct Guava declaration with the
+  `33.3.1-android` artifact already required by grpc-java 1.69.0 in their
+  shared rules_jvm_external module extension.
+- Removes the duplicate-version warning without changing the artifact selected
+  by the working Bazel 8 graph.
+
+Removal is planned when rules_web_testing_java updates its Guava declaration or
+the web-testing and grpc-java dependencies no longer share conflicting Maven
+coordinates.
