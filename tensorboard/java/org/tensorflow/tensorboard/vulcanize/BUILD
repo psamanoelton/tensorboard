@@ -13,8 +13,8 @@ java_binary(
     ],
     visibility = ["//visibility:public"],
     deps = [
-        "@google_bazel_common//third_party/java/guava",
         "@com_google_protobuf//:protobuf_java",
+        "@google_bazel_common//third_party/java/guava",
         "@io_bazel_rules_closure//java/io/bazel/rules/closure:webpath",
         "@io_bazel_rules_closure//java/io/bazel/rules/closure/webfiles:build_info_java_proto",
         "@tensorboard_maven//:org_jsoup_jsoup",
@@ -25,8 +25,8 @@ java_binary(
     name = "Zipper",
     srcs = ["Zipper.java"],
     deps = [
-        "@google_bazel_common//third_party/java/guava",
         "@com_google_protobuf//:protobuf_java",
+        "@google_bazel_common//third_party/java/guava",
         "@io_bazel_rules_closure//java/io/bazel/rules/closure/webfiles",
         "@io_bazel_rules_closure//java/io/bazel/rules/closure/webfiles:build_info_java_proto",
     ],

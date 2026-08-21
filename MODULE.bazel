@@ -1,3 +1,5 @@
+"""TensorBoard's Bazel module dependencies and toolchain configuration."""
+
 module(
     name = "tensorboard",
     bazel_compatibility = [
