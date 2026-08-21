@@ -166,7 +166,7 @@ the Python version instead of hardcoding it in the dependency module.
 
 **What it does:**
 - Aligns rules_web_testing_java's direct Guava declaration with the
-  `33.3.1-android` artifact already required by grpc-java 1.69.0 in their
+  `33.5.0-android` artifact already required by grpc-java 1.82.0 in their
   shared rules_jvm_external module extension.
 - Removes the duplicate-version warning without changing the artifact selected
   by the working Bazel 8 graph.

@@ -30,7 +30,7 @@ build --tool_java_runtime_version=remotejdk_21
 # Remove this compatibility flag with the planned rules_js/ts_project migration.
 build --incompatible_disallow_struct_provider_syntax=false
 
-# Protobuf 6.31.1 requires C++17 in this build. Keep the host and target
+# The current protobuf/gRPC stack requires C++17. Keep the host and target
 # language level aligned across supported platforms.
 common:linux --cxxopt=-std=c++17
 common:linux --host_cxxopt=-std=c++17
@@ -38,9 +38,8 @@ common:macos --cxxopt=-std=c++17
 common:macos --host_cxxopt=-std=c++17
 common:windows --cxxopt=/std:c++17
 common:windows --host_cxxopt=/std:c++17
-# Protobuf 6.31 still supports MSVC, but requires Bazel-on-Windows users to
-# acknowledge that upstream plans to remove that combination in a future
-# release.
+# Protobuf requires Bazel-on-Windows users to acknowledge that upstream may
+# remove MSVC support in a future release.
 common:windows --define=protobuf_allow_msvc=true
 
 # Local shells and virtualenvs can leak Python import state into Bazel tests,
