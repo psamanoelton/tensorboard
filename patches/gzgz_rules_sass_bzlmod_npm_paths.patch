@@ -12,7 +12,7 @@ diff --git a/sass/defs.bzl b/sass/defs.bzl
 index 7cf416f..d7f073c 100644
 --- a/sass/defs.bzl
 +++ b/sass/defs.bzl
-@@ -68,6 +68,18 @@ def _run_sass(ctx, input, css_output, map_output = None):
+@@ -68,6 +68,20 @@ def _run_sass(ctx, input, css_output, map_output = None):
  
          args.add("--load-path=%s" % prefix)
  
@@ -20,6 +20,8 @@ index 7cf416f..d7f073c 100644
 +    # sandboxes under their canonical repository name rather than an apparent
 +    # name such as external/npm. Add the actual node_modules root represented
 +    # by Sass dependency inputs so package imports continue to resolve.
++    # See Bazel's repository naming documentation:
++    # https://bazel.build/versions/8.7.0/external/overview#canonical-repository-name
 +    external_load_paths = {}
 +    for source in _collect_transitive_sources([input], ctx.attr.deps).to_list():
 +        marker = "/node_modules/"
