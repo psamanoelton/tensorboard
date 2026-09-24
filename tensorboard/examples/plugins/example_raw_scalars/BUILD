@@ -23,11 +23,9 @@ sh_test(
     # test.
     data = [
         "setup.py",
+        "//tensorboard/examples/plugins/example_raw_scalars/tensorboard_plugin_example_raw_scalars:package_files",
         "//tensorboard/pip_package",
-    ] + glob([
-        "tensorboard_plugin_example_raw_scalars/*.py",
-        "tensorboard_plugin_example_raw_scalars/static/**",
-    ]),
+    ],
     tags = [
         "manual",  # https://github.com/tensorflow/tensorboard/issues/2987
     ],
